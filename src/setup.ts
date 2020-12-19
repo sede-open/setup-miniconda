@@ -189,7 +189,9 @@ async function setupMiniconda(inputs: IActionInputs): Promise<void> {
       let channels: Array<string> | undefined;
       channels = environmentYaml["channels"];
 
-      if (condaConfig["channels"] === "" && channels !== undefined) {
+      // Check if channels is undefined or null (empty list) in the file.
+      // != should catch both, !== will get only one.
+      if (condaConfig["channels"] === "" && channels != null) {
         // TODO: avoid mutating state
         condaConfig = { ...condaConfig, channels: channels.join(",") };
       } else if (!environmentExplicit) {
